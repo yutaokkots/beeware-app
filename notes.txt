@@ -1,10 +1,10 @@
 https://docs.beeware.org/en/latest/tutorial/tutorial-0.html
 
-After briefcase installation:
+
 (venv) $ python -m pip install briefcase
 (venv) $ briefcase new
 
-
+After briefcase installation:
 (venv) $ tree         
 .
 ├── beeware-venv
@@ -115,11 +115,11 @@ For building installer:
 (venv) $ briefcase package --adhoc-sign
 
 
-For updating the app, after updating any code, runs the following:
+For updating the app, after updating any code, run the following:
 (venv) $ briefcase update
 
 
-For update, build and run the app with one command:
+For update, build and run the app in a single command:
 (venv) $ briefcase run -u
 
 
