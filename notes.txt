@@ -1,0 +1,30 @@
+https://docs.beeware.org/en/latest/tutorial/tutorial-0.html
+
+After briefcase installation:
+(venv) $ python -m pip install briefcase
+(venv) $ briefcase new
+
+
+(beeware-venv) Yuta@Yuta beeware-tutorial % tree         
+.
+├── beeware-venv
+|        ...
+└── helloworld
+    ├── CHANGELOG
+    ├── LICENSE
+    ├── README.rst
+    ├── pyproject.toml
+    ├── src
+    │   └── helloworld
+    │       ├── __init__.py
+    │       ├── __main__.py
+    │       ├── app.py
+    │       └── resources
+    │           ├── __init__.py
+    │           ├── helloworld.icns
+    │           ├── helloworld.ico
+    │           └── helloworld.png
+    └── tests
+        ├── __init__.py
+        ├── helloworld.py
+        └── test_app.py
