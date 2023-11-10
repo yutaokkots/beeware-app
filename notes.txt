@@ -117,3 +117,18 @@ For building installer:
 
 For updating the app, after updating any code, runs the following:
 (venv) $ briefcase update
+
+
+For update, build and run the app with one command:
+(venv) $ briefcase run -u
+
+
+#########
+Building an iOS app
+
+(venv) $ briefcase create iOS
+
+
+Running an iOS app
+(venv) $ briefcase run iOS
+
