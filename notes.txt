@@ -5,7 +5,7 @@ After briefcase installation:
 (venv) $ briefcase new
 
 
-(beeware-venv) Yuta@Yuta beeware-tutorial % tree         
+(venv) $ tree         
 .
 ├── beeware-venv
 |        ...
@@ -28,3 +28,92 @@ After briefcase installation:
         ├── __init__.py
         ├── helloworld.py
         └── test_app.py
+
+
+For creating application scaffold:
+
+(venv) $ briefcase create
+
+[helloworld] Generating application template...
+Using app template: https://github.com/beeware/briefcase-macOS-app-template.git, branch v0.3.16
+
+[helloworld] Installing support package...
+Using support package https://briefcase-support.s3.amazonaws.com/python/3.11/macOS/Python-3.11-macOS-support.b3.tar.gz
+Downloading Python-3.11-macOS-support.b3.tar.gz...
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100.0% • 00:21
+Unpacking support package... done
+Copying standard library into app bundle... done
+
+[helloworld] Installing application code...
+Installing src/helloworld... done
+
+[helloworld] Installing requirements...
+Collecting toga-cocoa~=0.4.0
+  Using cached toga_cocoa-0.4.0-py3-none-any.whl.metadata (3.0 kB)
+Collecting std-nslog~=1.0.0
+  Using cached std_nslog-1.0.3-py3-none-any.whl (4.8 kB)
+Collecting fonttools<5.0.0,>=4.42.1 (from toga-cocoa~=0.4.0)
+  Using cached fonttools-4.44.0-cp311-cp311-macosx_10_9_x86_64.whl.metadata (153 kB)
+Collecting rubicon-objc<0.5.0,>=0.4.7 (from toga-cocoa~=0.4.0)
+  Using cached rubicon_objc-0.4.7-py3-none-any.whl.metadata (5.4 kB)
+Collecting toga-core==0.4.0 (from toga-cocoa~=0.4.0)
+  Using cached toga_core-0.4.0-py3-none-any.whl.metadata (4.9 kB)
+Collecting travertino>=0.3.0 (from toga-core==0.4.0->toga-cocoa~=0.4.0)
+  Using cached travertino-0.3.0-py3-none-any.whl.metadata (4.3 kB)
+Using cached toga_cocoa-0.4.0-py3-none-any.whl (71 kB)
+Using cached toga_core-0.4.0-py3-none-any.whl (521 kB)
+Using cached fonttools-4.44.0-cp311-cp311-macosx_10_9_x86_64.whl (2.3 MB)
+Using cached rubicon_objc-0.4.7-py3-none-any.whl (61 kB)
+Using cached travertino-0.3.0-py3-none-any.whl (16 kB)
+Installing collected packages: travertino, std-nslog, rubicon-objc, fonttools, toga-core, toga-cocoa
+Successfully installed fonttools-4.44.0 rubicon-objc-0.4.7 std-nslog-1.0.3 toga-cocoa-0.4.0 toga-core-0.4.0 travertino-0.3.0
+Installing app requirements... done
+Collecting fonttools==4.44.0
+  Downloading fonttools-4.44.0-cp311-cp311-macosx_10_9_universal2.whl.metadata (153 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 153.6/153.6 kB 768.4 kB/s eta 0:00:00
+Downloading fonttools-4.44.0-cp311-cp311-macosx_10_9_universal2.whl (2.7 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.7/2.7 MB 2.4 MB/s eta 0:00:00
+Installing collected packages: fonttools
+Successfully installed fonttools-4.44.0
+Installing binary app requirements for arm64... done
+Thinning libraries in app_packages.arm64...
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100.0% • 00:04
+Merging app_packages.x86_64... done
+Merging app_packages.arm64... done
+Merging libraries...
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100.0% • 00:00
+
+[helloworld] Installing application resources...
+Installing src/helloworld/resources/helloworld.icns as application icon... done
+
+[helloworld] Removing unneeded app content...
+Removing unneeded app bundle content... done
+
+[helloworld] Created build/helloworld/macos/app
+
+
+1) It generated an application template. There’s a lot of files and configurations required to build a native installer, above and beyond the code of your actual application. This extra scaffolding is almost the same for every application on the same platform, except for the name of the actual application being constructed - so Briefcase provides an application template for each platform it supports. This step rolls out the template, substituting the name of your application, bundle ID, and other properties of your configuration file as required to support the platform you’re building on.
+If you’re not happy with the template provided by Briefcase, you can provide your own. However, you probably don’t want to do this until you’ve got a bit more experience using Briefcase’s default template.
+
+2) It downloaded and installed a support package. The packaging approach taken by briefcase is best described as “the simplest thing that could possibly work” - it ships a complete, isolated Python interpreter as part of every application it builds. This is slightly space inefficient - if you have 5 applications packaged with Briefcase, you’ll have 5 copies of the Python interpreter. However, this approach guarantees that every application is completely independent, using a specific version of Python that is known to work with the application.
+Again, Briefcase provides a default support package for each platform; if you want, you can provide your own support package, and have that package included as part of the build process. You may want to do this if you have particular options in the Python interpreter that you need to have enabled, or if you want to strip modules out of the standard library that you don’t need at runtime.
+
+Briefcase maintains a local cache of support packages, so once you’ve downloaded a specific support package, that cached copy will be used on future builds.
+
+3) It installed application requirements. Your application can specify any third-party modules that are required at runtime. These will be installed using pip into your application’s installer.
+4) It Installed your application code. Your application will have its own code and resources (e.g., images that are needed at runtime); these files are copied into the installer.
+5) It installed your resources needed by your application. Lastly, it adds any additional resources that are needed by the installer itself. This includes things like icons that need to be attached to the final application and splash screen images.
+
+
+For building application scaffold:
+
+(venv) $ briefcase build
+
+
+For building installer:
+
+(venv) $ briefcase package --adhoc-sign
+
+
+For updating the app, after updating any code, runs the following:
+(venv) $ briefcase update
